@@ -1,0 +1,162 @@
+You will:
+• Automate everything, to ensure scalability, security, and quality
+• Jenkins with Ansible
+    Create an Ansible Pipeline for Patching, userMgt, File, package Mgt    - Log4j  - mvn package > build.log
+
+• Jenkins with terraform
+       
+        
+• Engineer elegant solutions to reach our goal of achieving the “Concurrent DevOps” methodology across our teams
+• Work with Kubernetes to ensure application scalability and availability
+• Be responsible for maintaining application & infrastructure observability platforms
+• Work with engineers to modernize legacy applications through containerization & automation
+• Deploy and manage Kubernetes clusters 
+• Propose solutions to help fulfill our multi-cloud initiatives
+      AWS /    VPC  -- REGION
+                   IAM 
+      AZURE / 
+     GCP   VPC  -- Global
+• Become an expert in building visualizations that display data insights in meaningful ways
+• Perform constructive code-reviews with peers, understanding that sharing your experience through constructive collaboration helps towards the success of the team.
+• Participate in collaborative software-architecture brainstorming sessions
+• Identify and resolve production issues and implement fixes for them.
+You might be a good fit for this role if you:
+
+
+
+
+
+//terraform pipeline 
+// Jenkinsfile for terraform
+
+// build NOW 
+node {
+	stage('clone') 
+	{
+    git 'https://github.com/LandmakTechnology/terraform-eks'
+    // terraform files 
+	}
+	stage('validate') {
+    sh "terraform   init  "
+    sh "terraform validate  "
+  }
+	stage('plan') {
+   sh "terraform plan"
+  }
+	stage('create') {
+    sh "terraform apply --auto-approve"
+  }
+	stage('destroy') {
+   // sh "terraform destroy --auto-approve"
+
+  }
+	stage('Email') {
+    // pipeline syntax
+
+  }
+	stage('Approval') {
+
+  }
+	stage('Deploy-Prod') {
+
+  }
+}
+
+
+Jenkins CI Job:
+  jenkins Git/github 
+  jenkins with Maven
+  Jenkins with SonarQube 
+               Nexus 
+
+Build other projects
+
+CD JOB:
+  Tomcat/JBoss 
+  Docker and 
+
+    Docker-hub 
+  Docker swarm 
+  Ansible 
+  Kubernetes 
+
+stage('dockerBuild') {
+  sh "docker build -t myimage:1 . "
+  sh "docker tag myimage:1 mylandmarktech/app"
+  sh "docker login -u mylandmarktech -p ${dockehubPWD}"
+  sh "docker push mylandmarktech/app"
+  sh "docker rmi -f  mylandmarktech/app:latest myimage:1"
+}
+
+stage('deployment'){
+ sh "docker pull mylandmarktech/app:latest" 
+ sh "docker scan mylandmarktech/app:latest" 
+ //bat "docker scan mylandmarktech/app:latest" for windows
+ sh "docker run --name myapp -d -p 800:8080 mylandmarktech/app:latest" 
+}
+=================================
+pipeline{
+  agent any
+  tools {
+    maven: "maven3.8.4"
+    terraform: 'terraform1.11.04'
+    docker: "docker18"
+  }
+  stages{
+    stage('dockerBuild'){
+      agent slave1
+      steps{
+        sh "docker build -t myimage:1 . "
+        sh "docker tag myimage:1 mylandmarktech/app"
+        sh "docker login -u mylandmarktech -p ${dockehubPWD}"
+        sh "docker push mylandmarktech/app"
+        sh "docker rmi -f  mylandmarktech/app:latest myimage:1"
+      }
+    }
+    stage('deployment'){
+      agent slave1
+      steps{
+       sh "docker pull mylandmarktech/app:latest" 
+       sh "docker scan mylandmarktech/app:latest" 
+       //bat "docker scan mylandmarktech/app:latest" for windows
+       sh "docker run --name myapp -d -p 800:8080 mylandmarktech/app:latest" 
+      }
+    }
+    stage('notify') {
+      agent slave1
+      steps{
+
+      }
+    }
+
+  } 
+}
+
+• Work with Kubernetes to ensure application
+    Scalability and availability
+    CAS / HPA / VPA 
+      Kubernetes objects -- deployment / rs / rc / ss / pods  
+        Kubernetes - kops or EKS  
+
+        Replicas 20 
+
+High availability and better latency       
+  Cluster --> Nodes --> Pods 
+  Cluster --> Managed Clusters with EKS 
+              EKS --> KOPS --> KUBEADM 
+
+      NodeGroups 
+         NV / 
+         London 
+         Mumbai / 
+         Sydney
+         Lagos
+
+  Nodes --> Placing nodes in ASG (kops or EKS)
+             IAM -- SERVICE ROLE/POLICIES 
+            Deploying CAS 
+            Monitoring tools (Prometheus/Grafana / )
+
+  Pods --> Controller managers 
+             deployment / rs / rc / ss /
+           Monitoring tools (Prometheus/Grafana / )
